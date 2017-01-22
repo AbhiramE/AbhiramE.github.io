@@ -12,7 +12,7 @@ p {
 }
 
 .header-image {
-  background: url("http://res.cloudinary.com/dbnugenbb/image/upload/v1458915250/apple-desk-laptop-working1280_zesrlm.jpg") no-repeat center center fixed;
+  background: url("http://i.imgur.com/SThTcBv.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -26,6 +26,11 @@ p {
 
 .info-background {
   background-color: #F1F2F0;
+  background-size: cover;
+}
+
+.info-publication {
+  background-color: #881c1c;
   background-size: cover;
 }
 
