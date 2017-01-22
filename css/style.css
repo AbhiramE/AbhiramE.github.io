@@ -1,0 +1,105 @@
+body {
+  font-family: Open Sans;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 6em;
+}
+
+p {
+  font-size: 26px;
+}
+
+.header-image {
+  background: url("http://res.cloudinary.com/dbnugenbb/image/upload/v1458915250/apple-desk-laptop-working1280_zesrlm.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.header {
+  padding-top: 20%;
+  padding-bottom: 25%;
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  text-align: center;
+}
+
+.info-background {
+  background-color: #F1F2F0;
+  background-size: cover;
+}
+
+.info {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  color: #4F5458;
+}
+
+.larger-font {
+  font-size: 36px;
+}
+
+.smaller-font {
+  font-size: 16px;
+}
+
+.portfolio {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  text-align: center;
+  color: #F1F2F0;
+  background-color: #4F5458;
+  background-size: cover;
+}
+
+.well {
+  background: transparent;
+  border: none;
+  padding: 5px;
+  color: #F1F2F0;
+}
+
+.well:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.contact {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  text-align: center;
+  background-color: #F1F2F0;
+  color: black;
+}
+
+.footer {
+  padding-top: 1%;
+  padding-bottom: 1%;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+.social-icon {
+  color: black;
+  padding: 30px;
+}
+
+.fa-twitter:hover {
+  color: #0084b4
+}
+
+.fa-github:hover {
+  color: #313335;
+}
+
+.fa-linkedin:hover {
+  color: #0077b5;
+}
+
+.fa-fire:hover {
+  color: gray;
+}
+
+.fa-envelope:hover {
+  color: #ea4335;
+}
