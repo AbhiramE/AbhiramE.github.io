@@ -101,8 +101,20 @@ p {
   color: #0077b5;
 }
 
+.fa-instagram:hover {
+  color: deeppink;
+}
+
+.fa-medium:hover {
+  color: green;
+}
+
+.fa-tumblr:hover{
+  color: darkblue;
+}
+
 .fa-fire:hover {
-  color: gray;
+  color: darkred;
 }
 
 .fa-envelope:hover {
