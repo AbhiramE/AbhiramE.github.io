@@ -1,0 +1,108 @@
+baseURL: "https://abhirame.github.io/"
+title: Abhiram Eswaran
+paginate: 5
+theme: PaperMod
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  env: production
+  title: Abhiram Eswaran
+  description: "Software Engineer. Machine Learning. Data Science."
+  keywords: [Blog, Portfolio, ML, Data Science]
+  author: Abhiram Eswaran
+  DateFormat: "January 2, 2006"
+  defaultTheme: light
+  disableThemeToggle: true
+
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: false
+  ShowRssButtonInSectionTermList: false
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: false
+
+  profileMode:
+    enabled: true
+    title: Abhiram Eswaran
+    subtitle: "Software Engineer — Machine Learning, Data Science, and everything in between."
+    imageUrl: ""
+    imageWidth: 140
+    imageHeight: 140
+    buttons:
+      - name: Blog
+        url: posts
+      - name: Projects
+        url: projects
+      - name: About
+        url: about
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/AbhiramE"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/abhiram-eswaran"
+    - name: substack
+      url: "https://3798.substack.com"
+    - name: email
+      url: "mailto:abhiram.e@outlook.com"
+
+  cover:
+    hidden: true
+    hiddenInList: true
+    hiddenInSingle: true
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10
+    keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: blog
+      name: Blog
+      url: /posts/
+      weight: 10
+    - identifier: projects
+      name: Projects
+      url: /projects/
+      weight: 20
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 30
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 40
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+markup:
+  highlight:
+    noClasses: false
