@@ -1,7 +1,7 @@
 ---
 title: "Building a Second Brain for an AI Agent"
 date: 2026-03-29
-draft: false
+draft: true
 tags: ["ai", "knowledge-graphs", "agents", "system-design"]
 description: "What happens when you give an AI agent associative memory? A System 2 for slow, deliberate recall, built on a curated knowledge graph of 1,088 BBC episodes."
 ShowToc: true
