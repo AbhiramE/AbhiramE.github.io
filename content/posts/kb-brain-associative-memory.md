@@ -1,84 +1,68 @@
 ---
-title: "Building a Second Brain for an AI Agent"
+title: "Towards System 2 thinking for Claw"
 date: 2026-03-29
-draft: true
+draft: false
 tags: ["ai", "knowledge-graphs", "agents", "system-design"]
-description: "What happens when you give an AI agent associative memory? A System 2 for slow, deliberate recall, built on a curated knowledge graph of 1,088 BBC episodes."
+description: "Adding cross domain insights to my conversations with Claw."
 ShowToc: true
 TocOpen: false
 ---
 
-Can you augment what an LLM already knows with a curated knowledge source, and have it surface cross-domain connections the model wouldn't make on its own?
-
-Not RAG. Not "stuff the context window with search results and hope for the best." Something closer to how associative memory actually works. You're reading about Stoicism and something clicks. You remember that thing about Confucius from last month. Nobody told you they're related. A thread just connected somewhere in the back of your mind.
-
-I wanted to build that for an AI agent. An associative recall system that fires in the background, checks a personal knowledge base, and only speaks up when it finds something genuinely surprising. This is a follow up to a previous post about [Fireside](https://3798.substack.com/p/building-fireside), where I built a multi-agent panel discussion. That was System 1. Fast, reactive, conversational. This time I wanted to go the other direction.
+Claw has been keeping me occupied at all times in the day and especially over the weekends. The internet *(or could just be my echo chamber)* is getting wilder with the experiments. I have tried my hand at a few over the past few weeks. And this is a post about one such experiment that happened this weekend.
 
 ---
 
-## Kahneman, Then the arXiv Paper, Then the Idea
+## The Idea 💡
 
-If you've read Kahneman's *Thinking, Fast and Slow* (or if you were paying attention during the [Fireside](https://3798.substack.com/p/building-fireside) post where Agent Kahneman showed up), you know the split. **System 1** is fast and automatic. You see 2 + 2 and the answer is just *there*. **System 2** is slow and deliberate. Long division. Tax returns. Actually reading a dense paper instead of skimming the abstract.
+The idea is a simple one, can I augment LLM knowledge with data from a curated set of sources that can unlock cross domain connections. Think of it like RAG but the lookup happens in the background, after the model has already responded.
 
-An LLM is almost pure System 1. You ask it something, it responds instantly from pattern-matched training data. Remarkably good at this. But there's no slow, deliberate layer checking its work against a curated source of knowledge.
+The obvious inspiration for this was Kahneman's *Thinking, Fast and Slow*. For the uninitiated, the high level idea is **System 1** is fast and automatic ⚡. You see 2 + 2 and the answer is just *there*. **System 2** is slow and deliberate 🐢. Long division. Tax returns. Actually reading a dense paper instead of skimming the abstract.
 
-This isn't just a metaphor people throw around casually anymore. Li et al. formalized it in their 2025 survey, [*"From System 1 to System 2"*](https://arxiv.org/abs/2502.17419) (225 citations and counting), which traces how modern AI is moving from reactive inference toward deliberate, multi-step reasoning. Chain-of-thought prompting, thinking modes, reflection loops. All attempts to bolt a System 2 onto what is fundamentally a System 1 architecture.
+This is not a new idea and in fact LLMs already kinda do this. The idea of two Systems was the genesis behind the thinking models like o3, Deepseek etc. Like captured in detail here [*"From System 1 to System 2"*](https://arxiv.org/abs/2502.17419), which traces how modern AI is moving from reactive inference toward deliberate, multi-step reasoning. Chain-of-thought prompting, thinking modes, reflection loops. All interesting attempts to bolt a System 2 onto what is fundamentally a System 1 architecture.
 
-But here's the thing. Most of that work focuses on *reasoning*, making the model think harder about what it already knows. The angle I kept pulling at was different: **what if System 2 isn't about thinking harder, but about recalling better?** Not deeper reasoning over the same knowledge, but pulling in knowledge the model doesn't have. And then judging whether it's even worth mentioning.
-
-That's the idea behind what I ended up calling **KB Brain**.
+But in an interactive Claw-like system, additional responses from the agent are acceptable as long as they add signal. So what if we nudge the model into something it genuinely never considered, if (and it's a big if) you had the data to unlock such connections.
 
 ---
 
-## The Corpus
+## The Corpus 📚
 
-Every system like this lives or dies by its data. I needed something broad, curated, and structured. Spanning many domains, not just one vertical.
+Every system like this lives or dies by its data. I needed something broad, curated, and structured. Spanning many domains, not just one vertical. And luckily I had one such place that curated one of my favorite podcasts, BBC Radio 4's *In Our Time* by Melvyn Bragg and now run by Misha Glenny, [Braggoscope](https://www.braggoscope.com/). Philosophy one week, quantum mechanics the next, then the fall of Carthage. 1,088 episodes spanning two decades. Just 🤌. 
 
-I found it in an unlikely place. [Braggoscope](https://www.braggoscope.com/) is a fan-built index of BBC Radio 4's *In Our Time*, a show where Melvyn Bragg spends 45 minutes on a single topic with academic guests. Philosophy one week, quantum mechanics the next, then the fall of Carthage. 1,088 episodes spanning two decades.
+What makes it special isn't the content though, it's the metadata. Each episode comes with academic guests, curated reading lists, Dewey Decimal classification, and (this is the important part) **editorially cross-referenced related episodes**. "Stoicism" relates to "Epicureanism" and "Cynicism," but also to "Daoism" and "Chinese Legalism." 
 
-What makes it special isn't the content though, it's the metadata. Each episode comes with academic guests, curated reading lists, Dewey Decimal classification, and (this is the important part) **editorially cross-referenced related episodes**. A human sat down and decided "Stoicism" relates to "Epicureanism" and "Cynicism," but also to "Daoism" and "Chinese Legalism." That's judgment. You can't replicate that with cosine similarity.
-
-I scraped all 1,088 episodes and built a knowledge base from it.
+So I shamelessly did what everyone does when they find good data: I scraped all 1,088 episodes and built a knowledge base from it. 🕷️
 
 ---
 
-## How It Works
+## How It Works ⚙️
 
 The whole thing is a 4-layer system. The critical design rule up front: **System 1 responds first. The KB check happens after.** If the agent reads the KB *before* responding, it anchors on whatever it finds. The LLM's own knowledge, which is often better, gets contaminated. System 2 only adds value when it runs independently.
 
-<!-- TODO: Insert architecture diagram here, System 1/System 2 flow -->
+<div style="float: right; margin: 0 0 1em 1.5em; max-width: 45%;">
+  <img src="/images/system2-flow.png" alt="System 1 / System 2 flow diagram" style="width: 100%;" />
+  <p style="font-size: 0.85em; color: #7A6B63; text-align: center; margin-top: 0.4em;">System 1 responds first. System 2 fires in the background, checks the knowledge graph, and only speaks up if it finds something the LLM missed.</p>
+</div>
 
 ### The Graph
 
-All 1,088 topics become nodes. Edges come from the editorial cross-references (weight 1.0, curated human connections), content cross-references where one topic mentions another (weight 0.5, noisier, incidental), and shared academic guests across episodes (weight 0.7). A node looks like this:
+All 1,088 topics become nodes. Edges come from the editorial cross-references (weight 1.0, curated human connections), content cross-references where one topic mentions another (weight 0.5, noisier, incidental), and shared academic guests across episodes (weight 0.7). 
 
-```json
-{
-  "stoicism": {
-    "title": "Stoicism",
-    "type": "topic",
-    "tags": ["stoicism", "philosophy", "virtue", "zeno", "marcus-aurelius"]
-  }
-}
-```
+1,093 nodes. 8,491 edges. Average of 15.5 connections per node. No embeddings, no vector database, no NLP pipeline. Tags are just cleaned text tokens from titles and descriptions. For this system, the value turned out to be in the edges, the connections, not in the node representation.
 
-1,093 nodes. 8,491 edges. Average of 15.5 connections per node. No embeddings, no vector database, no NLP pipeline. Tags are just cleaned text tokens from titles and descriptions. The sophistication is in the edges, the *structure of connections*, not in the node representation.
-
-Here's what the graph looks like around a single node:
+To give you an idea of what the graph looks like here are few nodes centered around Stoicism. Stoicism, 23 edges. The 1-hop neighborhood is what you'd expect. Epicureanism, Cynicism, Daoism. Obvious. The LLM already knows those are related. But follow the graph one more hop and you land on Comedy in Ancient Greek Theatre, The Han Synthesis, the Pelagian Controversy. *Those* are the interesting ones. Those are the connections a bare LLM won't make on its own.
 
 ![Knowledge graph centered on Stoicism, 23 edges. 1-hop: Epicureanism, Cynicism, Confucius. 2-hop: Comedy in Ancient Greek Theatre, The Han Synthesis, the Pelagian Controversy.](/images/system2-graph.jpeg)
-
-Stoicism, 23 edges. The 1-hop neighborhood is what you'd expect. Epicureanism, Cynicism, Daoism. Obvious. The LLM already knows those are related. But follow the graph one more hop and you land on Comedy in Ancient Greek Theatre, The Han Synthesis, the Pelagian Controversy. *Those* are the interesting ones. Those are the connections a bare LLM won't make on its own.
+<p style="font-size: 0.85em; color: #7A6B63; text-align: center; margin-top: 0.4em;">Stoicism node with 23 edges. 1-hop neighbors are the obvious connections. 2-hop neighbors are where the surprises live.</p>
 
 ### The Lookup
 
-When the sub-agent fires, it runs a graph search. Tag match against the conversation keywords to find seed nodes, walk 1 hop out along edges (scoring neighbors by seed score × edge weight × decay), and conditionally walk a second hop if the first didn't surface enough strong hits. Rank, return the top 3–5 candidates.
+When the sub-agent fires, it runs a graph search. Tag match against the conversation keywords to find seed nodes, walk 1 hop out along edges (scoring neighbors by seed score × edge weight × decay), and conditionally walk a second hop if the first didn't surface enough strong hits. Rank, return the top 3-5 candidates.
 
-Why graph traversal over embeddings? Embeddings tell you what's *semantically similar*. "Stoicism" and "Epicureanism" score high because they co-occur in similar contexts. Fine, but obvious. Graph traversal tells you what's *connected through human judgment*. A human editor decided Stoicism connects to Chinese Legalism. Two hops out, you reach Comedy in Ancient Greek Theatre, a connection that makes sense once you see it but that no embedding model would surface. The trade-off is real. "Fusion energy" won't find "nuclear power" unless the words literally appear. But for associative recall, graph structure wins.
+The key here is that graph traversal surfaces what's *connected through human judgment*, not just what's semantically nearby. A human editor decided Stoicism connects to Chinese Legalism. Two hops out, you reach Comedy in Ancient Greek Theatre, a connection that makes sense once you see it but that you wouldn't stumble into by keyword search alone. The trade-off is real. "Fusion energy" won't find "nuclear power" unless the words literally appear. But for this kind of associative recall, graph structure seemed like the better fit.
 
 ### The Judge
 
-This is where most systems get it wrong. They find something relevant and surface it immediately. KB Brain does the opposite. It reads the candidate summaries and asks: **does this add something the LLM didn't already say?**
+The temptation with any system like this is to surface everything you find. This system tries to be more selective. It reads the candidate summaries and asks: **does this add something the LLM didn't already say?**
 
 Surface it if it's a historical parallel the agent missed, a surprising cross-domain connection, or a reframe that changes how you'd think about the topic. Discard it if it's something obviously related, repeats what was already covered, or amounts to "we have an entry on X" without an actual insight.
 
@@ -86,67 +70,46 @@ Most lookups result in nothing worth saying. That's the point. The system is des
 
 ### Delivery
 
-When there's something worth saying, it arrives as a natural follow-up 15-45 seconds after the original response. When there isn't, a special token (`ANNOUNCE_SKIP`) suppresses any visible output. The user never sees the misses. The feature is invisible until it has something worth saying.
+When there's something worth saying, it arrives as a natural follow-up 15-45 seconds after the original response. When there isn't, a special token (`ANNOUNCE_SKIP`) suppresses any visible output. The user never sees the misses. Ideally, the feature stays invisible until it has something worth saying.
 
 ---
 
-## Turning It On
+## The Results 🔬
 
-First live session. Seven spawns:
+Now for the interesting part, the results. I ran this for about 10 different topics and as expected, LLM knowledge (our System 1) usually covered the bases. But there were 2 cases where the System 2 did add to the discussion. The Cold War Art was definitely a good add. The Fusion Energy was also informative but you could argue that a web search would have yielded the same.
 
-I ask about South Korea and capitalism. The sub-agent checks the KB, finds nothing the LLM didn't already cover. Silent discard. Picasso and cubism, same story, nothing additive. Alpha Centauri, nothing. China and debt, low relevance matches, discarded.
+### Cold War Art
 
-Then I'm talking about art during the Cold War. The sub-agent fires and comes back with this: before the CIA ever thought to weaponize Abstract Expressionism, Picasso had already written the playbook with Guernica, a painting explicitly commissioned by the Spanish Republican government for the 1937 Paris Exposition to shift international opinion. The irony that Guernica was later housed at MoMA while the CIA used the same building's cultural networks for propaganda. That's an actual insight. That's the kind of connection the LLM alone doesn't make.
+I ask about Art in the Cold War and Picasso's influence on US artists. System 1 gives a solid response covering the CIA-Abstract Expressionism connection, Picasso's direct influence on Pollock and de Kooning. Then the sub-agent comes back with something the LLM didn't touch:
 
-Except the first time it tried, it timed out. The sub-agent was mid-sentence at the 30-second mark:
+<div style="display: flex; gap: 1em; justify-content: center; align-items: center; margin: 1em 0;">
+  <div style="max-width: 48%;">
+    <img src="/images/sub-agent-coldwar-system1.png" alt="System 1 response about Picasso and Cold War art" style="width: 100%;" />
+  </div>
+  <div style="max-width: 48%;">
+    <img src="/images/sub-agent-coldwar-insight.png" alt="Sub-agent insight about Guernica at MoMA" style="width: 100%;" />
+  </div>
+</div>
+<p style="font-size: 0.85em; color: #7A6B63; text-align: center; margin-top: 0.4em;">Cold War Art with Sub Agent Response</p>
 
-> *"Before the CIA ever thought to weaponize Abstract Expressionism, Picasso had already written the playbook with Guernica, a painting explicitly commissioned by the Spanish Republican government for the 1937 Paris Exposition to shift international opinion and raise war relief funds. It"*
+### Fusion Energy
 
-Cut off. Bumped the timeout to 60 seconds, re-ran, got the full insight. Classic.
+Same pattern. I ask about fusion energy, the agent covers NIF ignition, JET's final run, ITER. Then the sub-agent fires:
 
-Fusion energy surfaced another one, connecting China's $2.1B state-directed fusion investment to historical parallels in the corpus.
-
-**2 insights out of 7 spawns. 29% hit rate.** The other 71% stayed completely silent. Nobody noticed. That's exactly the ratio I wanted.
-
----
-
-## What I Got Wrong (So Far)
-
-**The 30-second timeout.** Obviously. A live insight got truncated. Fixed at 60.
-
-**Single-word tag matching.** "State-directed capitalism" gets split into three individual words ("state," "directed," "capitalism") and each one matches too broadly on its own. Multi-word concept tags would improve precision significantly.
-
-**ANNOUNCE_SKIP.** This one's a success story that started as a failure. The first version used a `NO_INSIGHT` response, which still triggered a visible announcement in chat. "✅ Subagent finished / NO_INSIGHT" popping up after every silent discard. Seeing that in every thread was going to kill the feature. `ANNOUNCE_SKIP` makes the misses truly invisible. Small fix, essential for the whole thing to be usable.
-
----
-
-## What I Learned
-
-**Never pre-read.** The agent doesn't look at the KB before responding. This prevents anchoring bias. The LLM's training data is usually *better* than a scraped summary. The KB only adds value when it adds something *different* from what System 1 already produced.
-
-**Make failures invisible.** A feature that announces its own failures every time will get turned off within a session. Non-negotiable.
-
-**Background, never blocking.** The sub-agent spawns after the response is already sent. Zero latency cost. The user gets their answer instantly. If the KB has something to add, it shows up later as a natural follow-up. If it doesn't, nothing happens.
-
-**Keep the graph dumb.** No NLP. No embeddings. No ML pipeline. The whole system runs on Python stdlib. The sophistication is in the graph edges, editorial judgment encoded as structure, not in fancy node representations.
+<div style="text-align: center; margin: 1em 0;">
+  <img src="/images/sub-agent-fusion.png" alt="Sub-agent insight about China's fusion investment" style="max-width: 60%; display: block; margin: 0 auto;" />
+  <p style="font-size: 0.85em; color: #7A6B63; margin-top: 0.4em;">Fusion Energy with Sub Agent Response</p>
+</div>
 
 ---
 
-## The Numbers
+## What to make of these results? 🤔
 
-| | |
-|---|---|
-| Episodes in corpus | 1,088 |
-| Graph nodes | 1,093 |
-| Graph edges | 8,491 |
-| Avg edges per node | 15.5 |
-| Pipeline code | ~1,200 lines of Python |
-| Hit rate (first session) | 29% |
-| Target discard rate | ~70% |
-| Sub-agent runtime | 15-45 seconds |
+I think we are onto something because a non-intrusive sub-agent in the background never hurt anyone. The value of this system scales with two things: the breadth of the graph and the topics I happen to discuss with Claw. Right now the corpus is heavily weighted toward history, philosophy, and science because that's what *In Our Time* covers. 
+
+The plan is to keep growing it. Manual nodes and edges as I find interesting sources, articles worth indexing, maybe even podcast episodes from other shows. 
+
+It is an interesting pattern to consider though, one that I'm sure has been explored in various systems or is already available on ClawHub as a skill. If humans are allowed to let System 2 override System 1, to pause, reconsider, and change their mind, agents should be able to do the same. 🧠
 
 ---
 
-The guest edges are coded but empty. Two episodes sharing an academic expert probably share a thematic thread, but I haven't computed those yet. The corpus can grow beyond Braggoscope into articles, papers, notes. And the sub-agent pattern doesn't care where the nodes come from. It cares about the edges between them.
-
-~1,200 lines of Python. No frameworks. No vector databases. No GPU. Just a knowledge graph, a lookup script, and a sub-agent that knows when to shut up.

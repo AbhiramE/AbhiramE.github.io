@@ -2,22 +2,15 @@
 title: "About"
 layout: "single"
 url: "/about/"
-summary: "About Abhiram Eswaran"
+summary: "About Abhiram E"
 ShowToc: false
 ---
 
 ## Hi, I'm Abhiram
 
-Software Engineer with a background in Machine Learning and Data Science. I hold a Master's in Computer Science from UMass Amherst, specializing in Data Science.
+AI Engineer building agents at scale. Experienced software engineer working at the intersection of agentic engineering, distributed systems and cybersecurity.
 
-### What I Work With
-
-- **Languages**: Python, Java, JavaScript, C, Ruby, SQL
-- **Domains**: Machine Learning, Deep Learning, Data Visualization, Information Retrieval, Graphical Models
-
-### Publications
-
-- *Detecting Potholes using Graph Theory* — IEEE Publication on applying graph-theoretic approaches to road surface analysis.
+Previously studied Computer Science at UMass Amherst. Currently spending every hour in Plan Mode thinking about the next hard problem because implementation is just a click away.
 
 ### Get in Touch
 

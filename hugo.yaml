@@ -1,5 +1,5 @@
 baseURL: "https://abhirame.github.io/"
-title: Abhiram Eswaran
+title: Plan Mode
 paginate: 5
 theme: PaperMod
 
@@ -14,10 +14,10 @@ minify:
 
 params:
   env: production
-  title: Abhiram Eswaran
+  title: Abhiram E
   description: "Software Engineer. Machine Learning. Data Science."
   keywords: [Blog, Portfolio, ML, Data Science]
-  author: Abhiram Eswaran
+  author: Abhiram E
   DateFormat: "January 2, 2006"
   defaultTheme: light
   disableThemeToggle: true
@@ -40,13 +40,13 @@ params:
 
   profileMode:
     enabled: true
-    title: Abhiram Eswaran
-    subtitle: "Software Engineer — Machine Learning, Data Science, and everything in between."
+    title: Welcome to Plan Mode
+    subtitle: "A blog for all my experiments in the post Opus era. Authored by me, Abhiram E"
     imageUrl: ""
     imageWidth: 140
     imageHeight: 140
     buttons:
-      - name: Blog
+      - name: Posts
         url: posts
       - name: Projects
         url: projects
@@ -81,7 +81,7 @@ params:
 menu:
   main:
     - identifier: blog
-      name: Blog
+      name: Posts
       url: /posts/
       weight: 10
     - identifier: projects
@@ -104,5 +104,8 @@ outputs:
     - JSON
 
 markup:
+  goldmark:
+    renderer:
+      unsafe: true
   highlight:
     noClasses: false
