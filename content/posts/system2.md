@@ -109,7 +109,7 @@ I think we are onto something because a non-intrusive sub-agent in the backgroun
 
 The plan is to keep growing it. Manual nodes and edges as I find interesting sources, articles worth indexing, maybe even podcast episodes from other shows. 
 
-It is an interesting pattern to consider though, one that I'm sure has been explored in various systems or is already available on ClawHub as a skill. If humans are allowed to let System 2 override System 1, to pause, reconsider, and change their mind, agents should be able to do the same. 🧠
+It is an interesting pattern to consider though, one that I'm sure has been explored in various systems or is already available on ClawHub as a skill. If madness is a lot like gravity, all it takes is a little push. Epiphany is a lot like lightning, all it takes is a little spark. 🧠
 
 ---
 
