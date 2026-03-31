@@ -1,5 +1,5 @@
 ---
-title: "Towards System 2 thinking for Claw"
+title: "Building a System 2 thinking for Claw"
 date: 2026-03-29
 draft: false
 tags: ["ai", "knowledge-graphs", "agents", "system-design"]
