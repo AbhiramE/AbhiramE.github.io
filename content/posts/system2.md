@@ -12,7 +12,7 @@ Claw has been keeping me occupied at all times in the day and especially over th
 
 ---
 
-## The Idea 💡
+## The Idea
 
 The idea is a simple one, can I augment LLM knowledge with data from a curated set of sources that can unlock cross domain connections. Think of it like RAG but the lookup happens in the background, after the model has already responded.
 
@@ -24,7 +24,7 @@ But in an interactive Claw-like system, additional responses from the agent are 
 
 ---
 
-## The Corpus 📚
+## The Corpus
 
 Every system like this lives or dies by its data. I needed something broad, curated, and structured. Spanning many domains, not just one vertical. And luckily I had one such place that curated one of my favorite podcasts, BBC Radio 4's *In Our Time* by Melvyn Bragg and now run by Misha Glenny, [Braggoscope](https://www.braggoscope.com/). Philosophy one week, quantum mechanics the next, then the fall of Carthage. 1,088 episodes spanning two decades. Just 🤌. 
 
@@ -34,7 +34,7 @@ So I shamelessly did what everyone does when they find good data: I scraped all 
 
 ---
 
-## How It Works ⚙️
+## How It Works
 
 The whole thing is a 4-layer system. The critical design rule up front: **System 1 responds first. The KB check happens after.** If the agent reads the KB *before* responding, it anchors on whatever it finds. The LLM's own knowledge, which is often better, gets contaminated. System 2 only adds value when it runs independently.
 
@@ -74,7 +74,7 @@ When there's something worth saying, it arrives as a natural follow-up 15-45 sec
 
 ---
 
-## The Results 🔬
+## The Results
 
 Now for the interesting part, the results. I ran this for about 10 different topics and as expected, LLM knowledge (our System 1) usually covered the bases. But there were 2 cases where the System 2 did add to the discussion. The Cold War Art was definitely a good add. The Fusion Energy was also informative but you could argue that a web search would have yielded the same.
 
@@ -103,7 +103,7 @@ Same pattern. I ask about fusion energy, the agent covers NIF ignition, JET's fi
 
 ---
 
-## What to make of these results? 🤔
+## What to make of these results?
 
 I think we are onto something because a non-intrusive sub-agent in the background never hurt anyone. The value of this system scales with two things: the breadth of the graph and the topics I happen to discuss with Claw. Right now the corpus is heavily weighted toward history, philosophy, and science because that's what *In Our Time* covers. 
 
