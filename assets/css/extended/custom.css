@@ -127,6 +127,98 @@ code {
     color: var(--content);
 }
 
+/* OpenIQ architecture stack */
+.openiq-stack {
+    width: min(100%, 560px);
+    margin: 1.75rem auto;
+    color: #FAF6F1;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.openiq-stack__layer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.35rem 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(250, 246, 241, 0.3);
+    background: #1f2026;
+    box-shadow: 0 14px 28px rgba(61, 48, 41, 0.12);
+}
+
+.openiq-stack__layer + .openiq-stack__layer {
+    margin-top: -1px;
+}
+
+.openiq-stack__layer--top {
+    border-radius: 8px 8px 3px 3px;
+}
+
+.openiq-stack__layer--middle {
+    background: #29272b;
+}
+
+.openiq-stack__layer--bottom {
+    border-radius: 3px 3px 8px 8px;
+    background: #242126;
+}
+
+.openiq-stack__name {
+    font-weight: 700;
+}
+
+.openiq-stack__role,
+.openiq-stack__detail {
+    color: #E6D2B9;
+}
+
+.openiq-stack__detail {
+    grid-column: 1 / -1;
+    font-size: 0.88rem;
+}
+
+@media (max-width: 520px) {
+    .openiq-stack__layer {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+        padding: 0.9rem 1rem;
+    }
+}
+
+/* OpenIQ demo */
+.openiq-demo-video {
+    max-width: 100%;
+    margin: 2rem auto 2.75rem;
+}
+
+.openiq-demo-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(250, 246, 241, 0.42);
+    border-radius: 10px;
+    background: #1f2026;
+    box-shadow: 0 24px 48px rgba(61, 48, 41, 0.22);
+}
+
+.post-content .footnotes {
+    margin-top: 2.5rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid rgba(74, 63, 55, 0.18);
+    color: var(--secondary);
+    font-size: 0.92rem;
+}
+
+.post-content .footnotes hr {
+    display: none;
+}
+
+.post-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(74, 63, 55, 0.16);
+}
+
 /* Footer */
 .footer {
     color: var(--secondary);
